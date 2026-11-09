@@ -15,8 +15,8 @@ How the relay works and why. Build and run instructions are in [README.md](READM
 | 7 | Delivered but unacknowledged messages are redelivered after reconnect | `unackedMessageIsRedeliveredAfterReconnect` |
 
 Also tested: takeover by a new connection, FIFO across a reconnect, connection and frame limits,
-a client that stops reading, bad input, and shutdown. Optional bonuses: FIFO ordering is done;
-a Dockerfile is included but untested; persistence is not done.
+a client that stops reading, bad input, and shutdown. Optional bonuses: FIFO ordering and a Docker image are done;
+persistence is not done.
 
 ## Architecture
 
@@ -141,7 +141,6 @@ Comments tagged `[Q1]` to `[Q9]` mark where each of these decisions is implement
 - Mailboxes are never removed, so memory grows with the number of distinct ids.
 - Redelivery happens only on reconnect (no ACK timeout).
 - Duplicate detection only covers recent ids.
-- The Dockerfile hasn't been built (Docker wasn't available on the development machine).
 
 ## Next steps
 

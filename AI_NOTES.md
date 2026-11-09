@@ -71,7 +71,9 @@ Source material for the "AI usage" section of APPROACH.md.
 - Ben asked what happens if the client starts before the server: it printed a raw `ConnectException` stack trace. Claude added a catch with a one-line "is the server running?" message; verified by running the jar against an unused port (exit code 1).
 - Diagrams: Ben asked for much simpler diagrams; settled on a 3-lifeline Mermaid sequence diagram (Alice, Server, Bob) with the mailbox shown as notes.
 - Claude wrote README.md (prerequisites, commands, artifact, configuration, lifecycle, dependencies, tests, Docker) and the remaining APPROACH.md sections (acceptance criteria, connection lifecycle, errors, state, concurrency, delivery semantics, Q1–Q9 decisions, testing, trade-offs, limitations, next steps, AI usage). Ben to read and adjust anything not in his own words.
-- Dockerfile (bonus 2): multi-stage, Maven + Temurin 21 to build, Temurin 21 JRE to run, non-root user, exec-form entrypoint. **Not built**: Docker isn't installed on Ben's machine.
+- Dockerfile (bonus 2): multi-stage, Maven + Temurin 21 to build, Temurin 21 JRE to run, non-root user, exec-form entrypoint.
+- Docker verification (after Ben installed Docker Desktop): the first build failed. Claude's `dependency:go-offline` step downloaded many unneeded plugin libraries and hit timeouts; replaced with a BuildKit cache mount on `/root/.m2` so only needed artifacts are fetched, once. Container networking on this Mac was slow (~5s per HTTPS request, DNS and connect fast), so the build needed retries while the cache filled; that's the machine's network, not the Dockerfile.
+- Verified: image builds; a client on the host talks to the server in the container; `docker stop` completes in ~0.6s with the shutdown hook's log lines (SIGTERM reaches the JVM); runs as non-root `relay`.
 - Repo hygiene: before the final push, the working notes were trimmed to project content only, the notes files were removed from the earlier unpushed commits, and the GitHub repo is to be recreated empty before pushing.
 
 ## Design-question map

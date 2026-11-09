@@ -3,12 +3,11 @@
 
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /src
-# Dependencies first, so they're cached and only re-downloaded when pom.xml changes.
 COPY pom.xml .
-RUN mvn -B -q dependency:go-offline
 COPY src src
+# The cache mount keeps Maven's downloads between builds, so dependencies are fetched once.
 # Tests run in `./mvnw verify`; the image build only packages.
-RUN mvn -B -q package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 mvn -B -q package -DskipTests
 
 FROM eclipse-temurin:21-jre
 RUN useradd --system --no-create-home relay

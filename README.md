@@ -117,8 +117,7 @@ docker run --rm -p 9000:9000 relay
 Then run clients from the host as above. Options go after the image name, e.g.
 `docker run --rm -p 9100:9100 relay --port=9100`.
 
-> The Dockerfile has not been built on the author's machine (Docker wasn't available there); see
-> Known limitations in [APPROACH.md](APPROACH.md).
+`docker stop` sends SIGTERM to the JVM, so the server shuts down cleanly (same steps as Ctrl-C).
 
 ## Project layout
 
