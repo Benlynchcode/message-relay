@@ -10,6 +10,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -56,8 +57,13 @@ public final class RelayCli {
             }
         }
 
+    //opens the tcp connection to the server and starts the client
         try (Socket socket = new Socket(host, port)) {
             new RelayCli(socket).run(id);
+        } catch (ConnectException e) {
+            // Nothing listening on that port: the OS refused the connection straight away.
+            System.err.printf("cannot connect to %s:%d (is the server running?)%n", host, port);
+            System.exit(1);
         }
     }
 
