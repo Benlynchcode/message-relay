@@ -14,6 +14,7 @@ public enum ErrorCode {
     INVALID_ID,
     UNKNOWN_RECIPIENT,
     MAILBOX_FULL,
+    BODY_TOO_LARGE,
     DUPLICATE,
     ID_REUSED,
     ACK_UNKNOWN
