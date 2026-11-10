@@ -164,6 +164,7 @@ final class ClientConnection {
         }
     }
 
+// **** REGISTER ****
     private void handleRegister(Message message) throws IOException {
         if (mailbox != null) {
             reply(Message.error(ErrorCode.ALREADY_REGISTERED));
@@ -197,6 +198,7 @@ final class ClientConnection {
         }
     }
 
+// **** SEND ****
     private void handleSend(Message message) {
         if (!requireRegistered()) {
             return;
@@ -241,7 +243,7 @@ final class ClientConnection {
             case MAILBOX_FULL -> Message.sendResult(id, false, ErrorCode.MAILBOX_FULL);
         });
     }
-
+// **** ACK ****
     private void handleAck(Message message) {
         if (!requireRegistered()) {
             return;
@@ -256,6 +258,7 @@ final class ClientConnection {
         }
     }
 
+    // **** PING ****
     private void handlePing() {
         if (requireRegistered()) {
             // [Q1: Idle timeout] Reading the PING already reset our timer; PONG lets the client know WE are still alive.
